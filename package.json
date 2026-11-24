@@ -1,0 +1,16 @@
+{
+  "name": "asistente-crianza",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Asistente de crianza con IA para recursoseducatiusips.es",
+  "type": "module",
+  "main": "server.mjs",
+  "scripts": {
+    "start": "node --env-file-if-exists=.env server.mjs"
+  },
+  "engines": { "node": ">=20.12" },
+  "dependencies": {
+    "@anthropic-ai/sdk": "latest",
+    "express": "^4.21.2"
+  }
+}

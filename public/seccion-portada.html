@@ -1,0 +1,56 @@
+<!--
+  Sección del asistente para la PORTADA de recursoseducatiusips.es
+  Pegar en Elementor → widget HTML, justo debajo del bloque principal (hero).
+  Cambia TU-SERVIDOR por la dirección de Render (p. ej. asistente-crianza.onrender.com).
+  El script del final carga también el botón flotante; si ya lo has puesto en el pie
+  de todas las páginas, borra esa línea aquí.
+-->
+<section class="pm-asistente" aria-labelledby="pm-asistente-titulo">
+  <div class="pm-asistente__texto">
+    <span class="pm-asistente__eyebrow">Nuevo · Asistente de crianza</span>
+    <h2 id="pm-asistente-titulo">¿Qué te preocupa hoy?</h2>
+    <p>Cuéntanos qué notas en tu hijo o hija y te damos ideas prácticas, te decimos qué especialista puede ayudar y te enseñamos los que tienes más cerca.</p>
+  </div>
+  <form class="pm-asistente__form" id="pm-asistente-form">
+    <label class="pm-oculto" for="pm-asistente-pregunta">Tu pregunta</label>
+    <input id="pm-asistente-pregunta" type="text" maxlength="500" placeholder="Ej.: a mi hijo le cuesta la lectura, ¿qué hago?" autocomplete="off">
+    <button type="submit">Preguntar</button>
+  </form>
+  <div class="pm-asistente__chips">
+    <a href="#asistente" data-pregunta="Me cuesta volver a la normalidad con mi hijo después de apagar las pantallas">Después de las pantallas</a>
+    <a href="#asistente" data-pregunta="Mi hija de 4 años habla poco y no se le entiende bien, ¿a quién acudo?">Habla poco o no se le entiende</a>
+    <a href="#asistente" data-pregunta="Creo que mi hijo puede tener altas capacidades, ¿qué hago y dónde le pueden valorar?">¿Altas capacidades?</a>
+    <a href="#asistente" data-pregunta="Mi hijo se acerca mucho al papel para leer y se cansa enseguida">Se cansa al leer</a>
+  </div>
+  <p class="pm-asistente__nota">Orientación general, no sustituye a un profesional. Para encontrar especialistas cercanos te pedirá permiso de ubicación.</p>
+</section>
+
+<style>
+  .pm-asistente{--pm-color:#2f8f6b;--pm-suave:#e6f3ed;--pm-tinta:#22302a;--pm-gris:#5f6b65;
+    max-width:960px;margin:40px auto;padding:clamp(24px,4vw,44px);border-radius:24px;background:var(--pm-suave);color:var(--pm-tinta);
+    display:grid;gap:18px;font-family:inherit;box-sizing:border-box}
+  .pm-asistente *{box-sizing:border-box}
+  .pm-asistente__eyebrow{display:inline-block;font-size:12px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--pm-color);margin-bottom:6px}
+  .pm-asistente h2{margin:0 0 8px;font-size:clamp(26px,3.4vw,36px);line-height:1.15;color:var(--pm-tinta);text-wrap:balance}
+  .pm-asistente p{margin:0;max-width:62ch;color:var(--pm-gris);font-size:17px;line-height:1.55}
+  .pm-asistente__form{display:flex;gap:10px;flex-wrap:wrap}
+  .pm-asistente__form input{flex:1 1 260px;min-width:0;font:inherit;font-size:17px;padding:15px 18px;border-radius:14px;border:2px solid transparent;background:#fff;color:var(--pm-tinta);box-shadow:0 2px 10px rgba(0,0,0,.06)}
+  .pm-asistente__form input:focus{outline:none;border-color:var(--pm-color)}
+  .pm-asistente__form button{font:inherit;font-weight:800;font-size:17px;padding:15px 26px;border:0;border-radius:14px;background:var(--pm-color);color:#fff;cursor:pointer}
+  .pm-asistente__form button:hover{filter:brightness(1.07)}
+  .pm-asistente__chips{display:flex;flex-wrap:wrap;gap:8px}
+  .pm-asistente__chips a{font-size:15px;padding:8px 14px;border-radius:999px;background:#fff;color:var(--pm-tinta);text-decoration:none;border:1px solid rgba(0,0,0,.06)}
+  .pm-asistente__chips a:hover{border-color:var(--pm-color);color:var(--pm-color)}
+  .pm-asistente .pm-asistente__nota{font-size:13px}
+  .pm-oculto{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+</style>
+
+<script>
+  document.getElementById("pm-asistente-form").addEventListener("submit", function (e) {
+    e.preventDefault();
+    var campo = document.getElementById("pm-asistente-pregunta");
+    var t = campo.value.trim();
+    if (window.AsistenteCrianza) { window.AsistenteCrianza.abrir(t); campo.value = ""; }
+  });
+</script>
+<script src="https://TU-SERVIDOR/widget.js" data-color="#2f8f6b" defer></script>

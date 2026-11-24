@@ -28,18 +28,24 @@ búsqueda web en lugar de Google Maps.
 
 ## Ponerlo en la web (WordPress)
 
-1. Publica este servidor en un hosting con Node (Render, Railway, Fly.io…),
-   por ejemplo en `https://asistente.recursoseducatiusips.es`.
-2. En WordPress (Elementor → widget HTML) pega:
+1. Publica este servidor en Render (botón **New → Blueprint** con este
+   repositorio; `render.yaml` ya lo configura). Te dará una dirección tipo
+   `https://asistente-crianza.onrender.com`.
+2. **Portada:** en Elementor, añade un widget HTML justo debajo del bloque
+   principal y pega el contenido de `public/seccion-portada.html`, cambiando
+   `TU-SERVIDOR` por tu dirección. Crea un bloque destacado con una caja para
+   preguntar y sugerencias rápidas, y carga el botón flotante.
+3. **Botón flotante en toda la web (opcional):** pega en el pie de página
+   (Elementor → Theme Builder → Footer, o un plugin tipo "Insert Headers and
+   Footers"):
 
 ```html
-<iframe src="https://asistente.recursoseducatiusips.es"
-        allow="geolocation"
-        style="width:100%;height:700px;border:0;border-radius:16px"></iframe>
+<script src="https://TU-SERVIDOR/widget.js" data-color="#2f8f6b" defer></script>
 ```
 
-`allow="geolocation"` es necesario para que el chat pueda pedir la ubicación
-dentro del iframe.
+`data-color` es el color de la marca; cámbialo por el de la web. Cualquier
+enlace con `href="#asistente"` (y opcionalmente `data-pregunta="..."`) abre el
+chat, así que puedes añadirlo a botones del menú o de los artículos.
 
 ## Notas del prototipo
 

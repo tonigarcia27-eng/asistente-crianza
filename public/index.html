@@ -37,6 +37,8 @@
   textarea { flex: 1; resize: none; font: inherit; padding: 10px 12px; border-radius: 12px; border: 1px solid var(--border); background: var(--panel); color: var(--text); min-height: 46px; max-height: 160px; }
   form button { font: inherit; font-weight: 600; background: var(--accent); color: #fff; border: 0; border-radius: 12px; padding: 0 18px; cursor: pointer; }
   form button:disabled { opacity: .5; cursor: default; }
+  .embed header h1, .embed header > p { display: none; }
+  .embed header { padding: 8px 16px; }
   .aviso { font-size: .75rem; color: var(--muted); text-align: center; padding: 0 16px 10px; }
 </style>
 </head>
@@ -80,24 +82,31 @@
   let gps = null;
 
   // --- Ubicación automática: GPS si el navegador lo permite; si no, el servidor usa la IP.
+  const params = new URLSearchParams(location.search);
+  if (params.get("embed") === "1") document.body.classList.add("embed");
+
   function pedirGps() {
-    if (!("geolocation" in navigator)) {
-      ubicacionEl.textContent = "Usaré tu zona aproximada.";
-      return;
-    }
-    navigator.geolocation.getCurrentPosition(
-      (pos) => {
-        gps = { lat: +pos.coords.latitude.toFixed(4), lon: +pos.coords.longitude.toFixed(4) };
-        ubicacionEl.textContent = "📍 Ubicación precisa activada.";
-      },
-      () => {
-        ubicacionEl.innerHTML = 'Usaré tu zona aproximada. <button type="button" id="reintentar">Usar ubicación precisa</button>';
-        document.getElementById("reintentar").onclick = pedirGps;
-      },
-      { enableHighAccuracy: false, timeout: 8000, maximumAge: 600000 }
-    );
+    return new Promise((listo) => {
+      if (!("geolocation" in navigator)) {
+        ubicacionEl.textContent = "Usaré tu zona aproximada.";
+        return listo();
+      }
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          gps = { lat: +pos.coords.latitude.toFixed(4), lon: +pos.coords.longitude.toFixed(4) };
+          ubicacionEl.textContent = "📍 Ubicación precisa activada.";
+          listo();
+        },
+        () => {
+          ubicacionEl.innerHTML = 'Usaré tu zona aproximada. <button type="button" id="reintentar">Usar ubicación precisa</button>';
+          document.getElementById("reintentar").onclick = pedirGps;
+          listo();
+        },
+        { enableHighAccuracy: false, timeout: 8000, maximumAge: 600000 }
+      );
+    });
   }
-  pedirGps();
+  const gpsListo = pedirGps();
 
   // --- Markdown mínimo y seguro (negritas, enlaces, listas, párrafos)
   function escapar(s) {
@@ -181,6 +190,16 @@
     if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); form.requestSubmit(); }
   });
   document.querySelectorAll("#sugerencias button").forEach((b) => b.addEventListener("click", () => preguntar(b.textContent)));
+
+  // Pregunta que llega desde la web (portada o botón flotante)
+  const esperarGps = () => Promise.race([gpsListo, new Promise((r) => setTimeout(r, 6000))]);
+  const inicial = (params.get("q") || "").trim().slice(0, 1000);
+  if (inicial) esperarGps().then(() => preguntar(inicial));
+  window.addEventListener("message", (e) => {
+    if (e.source !== window.parent || !e.data || e.data.tipo !== "pregunta") return;
+    const t = String(e.data.texto || "").trim().slice(0, 1000);
+    if (t && !enviar.disabled) esperarGps().then(() => preguntar(t));
+  });
 })();
 </script>
 </body>

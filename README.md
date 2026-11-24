@@ -40,7 +40,7 @@ búsqueda web en lugar de Google Maps.
    Footers"):
 
 ```html
-<script src="https://TU-SERVIDOR/widget.js" data-color="#2f8f6b" defer></script>
+<script src="https://TU-SERVIDOR/widget.js" data-color="#185665" defer></script>
 ```
 
 `data-color` es el color de la marca; cámbialo por el de la web. Cualquier

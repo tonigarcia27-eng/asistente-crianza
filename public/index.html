@@ -84,6 +84,12 @@
   // --- Ubicación automática: GPS si el navegador lo permite; si no, el servidor usa la IP.
   const params = new URLSearchParams(location.search);
   if (params.get("embed") === "1") document.body.classList.add("embed");
+  const colorMarca = params.get("color");
+  if (colorMarca && /^#[0-9a-fA-F]{6}$/.test(colorMarca)) {
+    document.documentElement.style.setProperty("--accent", colorMarca);
+    document.documentElement.style.setProperty("--accent-soft", colorMarca + "22");
+    document.documentElement.style.setProperty("--user", colorMarca + "1a");
+  }
 
   function pedirGps() {
     return new Promise((listo) => {

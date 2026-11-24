@@ -57,6 +57,7 @@
       iframe.allow = "geolocation";
       const url = new URL("/", origen);
       url.searchParams.set("embed", "1");
+      url.searchParams.set("color", color);
       if (pregunta) url.searchParams.set("q", pregunta);
       iframe.src = url.toString();
       panel.appendChild(iframe);

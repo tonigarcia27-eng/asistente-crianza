@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: asistente-crianza
+    runtime: node
+    plan: free
+    region: frankfurt
+    buildCommand: npm install
+    startCommand: npm start
+    envVars:
+      - key: ANTHROPIC_API_KEY
+        sync: false
+      - key: GOOGLE_MAPS_API_KEY
+        sync: false
+      - key: ALLOWED_ORIGINS
+        value: https://recursoseducatiusips.es,https://www.recursoseducatiusips.es
